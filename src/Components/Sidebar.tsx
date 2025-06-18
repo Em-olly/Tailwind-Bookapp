@@ -1,7 +1,7 @@
 // Sidebar.tsx
 import React from "react";
-import "./Sidebar.css";
-import { useAuth } from "../hooks/useAuth";
+import "../Styles/Sidebar.css";
+import { useAuth } from "../Context/useAuth";
 import { Home, User, Settings, LogOut, X } from "lucide-react";
 
 interface SidebarProps {

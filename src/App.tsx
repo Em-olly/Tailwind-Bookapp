@@ -20,47 +20,27 @@
 // src/App.tsx
 import { useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { AuthProvider } from "./hooks/useAuth.tsx";
-import WelcomePage from "./Pages/welcomePage.tsx";
+import { AuthProvider } from "./Context/useAuth.tsx";
+import WelcomePage from "./Pages/WelcomePage.tsx";
 import UserSettings from "./Components/UserSettings.tsx";
+import Dashboard from "./Pages/Dashboard.tsx";
+import BookReader from "./Components/BookReader.tsx";
 import NotFound from "./Pages/NotFound.tsx";
-import Dashboard from "./Components/Dashboard.tsx";
+import HelpCenter from "./Pages/HelpCenter.tsx";
 
 const App = () => {
-  useEffect(() => {
-    const fontSize = localStorage.getItem("fontSize");
-    const theme = localStorage.getItem("theme");
-
-    // Apply font size
-    if (fontSize) {
-      switch (fontSize) {
-        case "small":
-          document.documentElement.style.fontSize = "14px";
-          break;
-        case "large":
-          document.documentElement.style.fontSize = "18px";
-          break;
-        default:
-          document.documentElement.style.fontSize = "16px";
-      }
-    }
-
-    // Apply theme
-    if (theme === "dark") {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-  }, []);
+  
 
   return (
     <AuthProvider>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<WelcomePage />} />
-          <Route path="*" element={<NotFound />} />
           <Route path="/dashboard/*" element={<Dashboard />} />
+          <Route path="/help-center" element={<HelpCenter />} />
+          <Route path="/book/:bookKey" element={<BookReader />} />
           <Route path="settings" element={<UserSettings />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>

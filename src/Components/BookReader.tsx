@@ -1,402 +1,261 @@
-// import type React from "react";
-// import { useState, useEffect } from "react";
-// import {
-//   ChevronLeft,
-//   ChevronRight,
-//   ExternalLink,
-//   X,
-//   Loader2,
-//   AlertCircle,
-//   Library,
-//   Globe,
-// } from "lucide-react";
-// import "./BookReader.css";
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { ArrowLeft, BookOpen, ExternalLink, ChevronLeft, ChevronRight } from 'lucide-react';
 
-// interface BookReaderProps {
-//   book: {
-//     key: string;
-//     title: string;
-//     author_name?: string[];
-//     cover_i?: number;
-//   };
-//   isOpen: boolean;
-//   onClose: () => void;
-// }
+interface BookContent {
+  type: 'text' | 'external' | 'unavailable';
+  content?: string;
+  url?: string;
+  title: string;
+  author: string;
+  pages?: string[];
+}
 
-// interface BookContent {
-//   available: boolean;
-//   type: "full_text" | "preview" | "external_link" | "unavailable";
-//   content?: string;
-//   pages?: string[];
-//   external_url?: string;
-//   ia_identifier?: string;
-// }
-
-// const BookReader: React.FC<BookReaderProps> = ({ book, isOpen, onClose }) => {
-//   const [bookContent, setBookContent] = useState<BookContent | null>(null);
-//   const [loading, setLoading] = useState(false);
-//   const [currentPage, setCurrentPage] = useState(0);
-//   const [error, setError] = useState<string | null>(null);
-
-//   useEffect(() => {
-//     if (isOpen && book) {
-//       fetchBookContent();
-//     }
-//   }, [isOpen, book]);
-
-//   const fetchBookContent = async () => {
-//     setLoading(true);
-//     setError(null);
-
-//     try {
-//       // First, try to get book details from Open Library
-//       const bookResponse = await fetch(
-//         `https://openlibrary.org${book.key}.json`
-//       );
-//       const bookData = await bookResponse.json();
-
-//       // Check for Internet Archive identifier
-//       if (bookData.ocaid) {
-//         const content = await fetchInternetArchiveContent(bookData.ocaid);
-//         setBookContent(content);
-//       } else {
-//         // Try to find alternative sources
-//         const alternativeContent = await findAlternativeSources(book);
-//         setBookContent(alternativeContent);
-//       }
-//     } catch (error) {
-//       console.error("Error fetching book content:", error);
-//       setError("Failed to load book content");
-//       setBookContent({
-//         available: false,
-//         type: "unavailable",
-//       });
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   interface MetadataFile {
-//     name?: string;
-//   }
-
-//   interface MetadataResponse {
-//     files?: MetadataFile[];
-//   }
-
-//   const fetchInternetArchiveContent = async (
-//     identifier: string
-//   ): Promise<BookContent> => {
-//     try {
-//       const metadataResponse = await fetch(
-//         `https://archive.org/metadata/${identifier}`
-//       );
-//       if (!metadataResponse.ok) {
-//         throw new Error(
-//           `Failed to fetch metadata for identifier: ${identifier}`
-//         );
-//       }
-
-//       const metadata: MetadataResponse = await metadataResponse.json();
-
-//       const textFiles = Array.isArray(metadata.files)
-//         ? metadata.files.filter(
-//             (file) => file.name?.endsWith(".txt") || file.name?.endsWith(".pdf")
-//           )
-//         : [];
-
-//       if (textFiles.length === 0) {
-//         return {
-//           available: true,
-//           type: "external_link",
-//           external_url: `https://archive.org/details/${identifier}`,
-//           ia_identifier: identifier,
-//         };
-//       }
-
-//       const textFile =
-//         textFiles.find((file) => file.name?.endsWith(".txt")) || textFiles[0];
-
-//       if (!textFile?.name) {
-//         throw new Error("No valid text file found in metadata.");
-//       }
-
-//       const textResponse = await fetch(
-//         `https://archive.org/download/${identifier}/${textFile.name}`
-//       );
-//       if (!textResponse.ok) {
-//         throw new Error(`Failed to fetch text file: ${textFile.name}`);
-//       }
-
-//       const fullText = await textResponse.text();
-//       const pages = splitIntoPages(fullText);
-
-//       return {
-//         available: true,
-//         type: "full_text",
-//         content: fullText,
-//         pages,
-//         ia_identifier: identifier,
-//       };
-//     } catch (error) {
-//       console.error("Error fetching Internet Archive content:", error);
-//       return {
-//         available: false,
-//         type: "unavailable",
-//       };
-//     }
-//   };
-
-//   interface GutenbergBook {
-//     formats: {
-//       "text/plain"?: string;
-//     };
-//   }
-
-//   interface GutenbergResponse {
-//     results: GutenbergBook[];
-//   }
-
-//   const findAlternativeSources = async (book: {
-//     title: string;
-//   }): Promise<BookContent> => {
-//     try {
-//       // Try Project Gutenberg search
-//       const gutenbergResponse = await fetch(
-//         `https://gutendex.com/books/?search=${encodeURIComponent(book.title)}`
-//       );
-//       const gutenbergData: GutenbergResponse = await gutenbergResponse.json();
-
-//       if (gutenbergData.results && gutenbergData.results.length > 0) {
-//         const gutenbergBook = gutenbergData.results[0];
-//         const textUrl = gutenbergBook.formats["text/plain"];
-
-//         if (textUrl) {
-//           const textResponse = await fetch(textUrl);
-//           const fullText = await textResponse.text();
-//           const pages = splitIntoPages(fullText);
-
-//           return {
-//             available: true,
-//             type: "full_text",
-//             content: fullText,
-//             pages,
-//           };
-//         }
-//       }
-//     } catch (error) {
-//       console.error("Project Gutenberg search failed:", error);
-//     }
-
-//     // If no sources found
-//     return {
-//       available: false,
-//       type: "unavailable",
-//     };
-//   };
-
-//   const splitIntoPages = (text: string): string[] => {
-//     const wordsPerPage = 300;
-//     const words = text.split(/\s+/);
-//     const pages: string[] = [];
-
-//     for (let i = 0; i < words.length; i += wordsPerPage) {
-//       const pageWords = words.slice(i, i + wordsPerPage);
-//       pages.push(pageWords.join(" "));
-//     }
-
-//     return pages;
-//   };
-
-//   const nextPage = () => {
-//     if (bookContent?.pages && currentPage < bookContent.pages.length - 1) {
-//       setCurrentPage(currentPage + 1);
-//     }
-//   };
-
-//   const prevPage = () => {
-//     if (currentPage > 0) {
-//       setCurrentPage(currentPage - 1);
-//     }
-//   };
-
-//   if (!isOpen) return null;
-
-//   return (
-//     <div className="book-reader-overlay">
-//       <div className="book-reader-modal">
-//         <div className="book-reader-header">
-//           <div className="book-info">
-//             <h2>{book.title}</h2>
-//             {book.author_name && (
-//               <p>by {book.author_name.slice(0, 2).join(", ")}</p>
-//             )}
-//           </div>
-//           <button onClick={onClose} className="close-button">
-//             <X />
-//           </button>
-//         </div>
-
-//         <div className="book-reader-content">
-//           {loading && (
-//             <div className="loading-state">
-//               <Loader2 className="loading-icon" />
-//               <p>Loading book content...</p>
-//             </div>
-//           )}
-
-//           {error && (
-//             <div className="error-state">
-//               <AlertCircle className="error-icon" />
-//               <h3>Error Loading Book</h3>
-//               <p>{error}</p>
-//               <button onClick={fetchBookContent} className="retry-button">
-//                 Try Again
-//               </button>
-//             </div>
-//           )}
-
-//           {bookContent && !loading && (
-//             <>
-//               {bookContent.type === "full_text" && bookContent.pages && (
-//                 <div className="text-reader">
-//                   <div className="page-controls">
-//                     <button
-//                       onClick={prevPage}
-//                       disabled={currentPage === 0}
-//                       className="page-button"
-//                     >
-//                       <ChevronLeft className="page-nav-icon" /> Previous
-//                     </button>
-//                     <span className="page-info">
-//                       Page {currentPage + 1} of {bookContent.pages.length}
-//                     </span>
-//                     <button
-//                       onClick={nextPage}
-//                       disabled={currentPage === bookContent.pages.length - 1}
-//                       className="page-button"
-//                     >
-//                       Next <ChevronRight className="page-nav-icon" />
-//                     </button>
-//                   </div>
-
-//                   <div className="page-content">
-//                     <p>{bookContent.pages[currentPage]}</p>
-//                   </div>
-//                 </div>
-//               )}
-
-//               {bookContent.type === "external_link" && (
-//                 <div className="external-link-state">
-//                   <Globe className="external-icon" />
-//                   <h3>Read on External Site</h3>
-//                   <p>This book is available to read on an external platform.</p>
-//                   <a
-//                     href={bookContent.external_url}
-//                     target="_blank"
-//                     rel="noopener noreferrer"
-//                     className="external-button"
-//                   >
-//                     <ExternalLink className="external-link-icon" />
-//                     Read on Internet Archive
-//                   </a>
-//                 </div>
-//               )}
-
-//               {bookContent.type === "unavailable" && (
-//                 <div className="unavailable-state">
-//                   <Library className="unavailable-icon" />
-//                   <h3>Content Not Available</h3>
-//                   <p>
-//                     The full text of this book is not available for online
-//                     reading. This may be due to copyright restrictions.
-//                   </p>
-//                   <div className="suggestions">
-//                     <p>You might find this book at:</p>
-//                     <ul>
-//                       <li>Your local library</li>
-//                       <li>Online bookstores</li>
-//                       <li>Digital library services</li>
-//                     </ul>
-//                   </div>
-//                 </div>
-//               )}
-//             </>
-//           )}
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default BookReader;
-import { useParams, useNavigate } from "react-router-dom";
-import { ChevronLeft, ChevronRight, X, Loader2 } from "lucide-react";
-import { useEffect, useState } from "react";
-
-const BookReader = () => {
-  const { bookKey } = useParams();
+const BookReader: React.FC = () => {
+  const { bookKey = '' } = useParams<{ bookKey?: string }>();
   const navigate = useNavigate();
-  const [content, setContent] = useState<string>("");
+  const [bookContent, setBookContent] = useState<BookContent | null>(null);
   const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchBookContent = async () => {
-      try {
-        // Decode the book key
-        const decodedKey = decodeURIComponent(bookKey || "");
-
-        // Fetch book details from Open Library
-        const response = await fetch(
-          `https://openlibrary.org${decodedKey}.json`
-        );
-        const data = await response.json();
-
-        // Process content (simplified example)
-        if (data.description) {
-          setContent(
-            typeof data.description === "string"
-              ? data.description
-              : data.description.value || "No content available"
-          );
-        } else {
-          setContent("No content available for this book");
-        }
-      } catch (error) {
-        console.error("Error fetching book:", error);
-        setContent("Failed to load book content");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchBookContent();
+    if (bookKey) {
+      fetchBookContent(bookKey);
+    } else {
+      setError('No book specified');
+      setLoading(false);
+    }
   }, [bookKey]);
 
+  const fetchBookContent = async (key: string) => {
+    setLoading(true);
+    setError(null);
+    
+    try {
+      // Properly format the book key
+      const formattedKey = key.startsWith('/works/') ? key : `/works/${key}`;
+      
+      // Fetch book metadata
+      const bookResponse = await fetch(`https://openlibrary.org${formattedKey}.json`);
+      if (!bookResponse.ok) throw new Error('Book not found');
+      
+      const bookData = await bookResponse.json();
+      
+      // Extract title and author
+      const title = bookData.title || 'Unknown Title';
+      const author = bookData.authors?.[0]?.name || 'Unknown Author';
+      
+      // Try to get readable content
+      let content: BookContent = {
+        type: 'unavailable',
+        title,
+        author
+      };
+      
+      // Try Internet Archive first
+      if (bookData.ocaid) {
+        try {
+          const iaResponse = await fetch(
+            `https://archive.org/download/${bookData.ocaid}/${bookData.ocaid}_djvu.txt`
+          );
+          
+          if (iaResponse.ok) {
+            const text = await iaResponse.text();
+            content = {
+              type: 'text',
+              title,
+              author,
+              content: text,
+              pages: splitIntoPages(text)
+            };
+          }
+        } catch (iaError) {
+          console.log('Internet Archive content not available');
+        }
+      }
+      
+      
+      // Fallback to external link
+      if (content.type === 'unavailable' && bookData.links?.length > 0) {
+        const readableLink = bookData.links.find((link: any) => 
+          link.title?.toLowerCase().includes('read') || 
+          link.title?.toLowerCase().includes('full text')
+        );
+        
+        if (readableLink) {
+          content = {
+            type: 'external',
+            title,
+            author,
+            url: readableLink.url
+          };
+        }
+      }
+      
+      setBookContent(content);
+    } catch (err) {
+      console.error('Error fetching book content:', err);
+      setError('Failed to load book content. Please try another book.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const splitIntoPages = (text: string): string[] => {
+    const wordsPerPage = 500;
+    const words = text.split(/\s+/);
+    const pages: string[] = [];
+    
+    for (let i = 0; i < words.length; i += wordsPerPage) {
+      pages.push(words.slice(i, i + wordsPerPage).join(' '));
+    }
+    
+    return pages;
+  };
+
+  const goToPreviousPage = () => {
+    setCurrentPage(prev => Math.max(0, prev - 1));
+  };
+
+  const goToNextPage = () => {
+    if (bookContent?.pages) {
+      setCurrentPage(prev => Math.min(bookContent.pages!.length - 1, prev + 1));
+    }
+  };
+
+  // Render loading state
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-screen">
-        <Loader2 className="w-12 h-12 animate-spin text-purple-600" />
+      <div className="min-h-screen bg-purple-50 flex items-center justify-center">
+        <div className="text-center">
+          <BookOpen className="w-16 h-16 text-purple-600 mx-auto mb-4 animate-pulse" />
+          <p className="text-lg text-purple-600">Loading book content...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Render error state
+  if (error || !bookContent) {
+    return (
+      <div className="min-h-screen bg-purple-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="text-red-500 mb-4">
+            <BookOpen className="w-16 h-16 mx-auto" />
+            <p className="text-lg mt-4">{error || 'Book content unavailable'}</p>
+          </div>
+          <button
+            onClick={() => navigate('/')}
+            className="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
+          >
+            Return to Search
+          </button>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="fixed inset-0 bg-white z-50 p-4 overflow-auto">
-      <div className="max-w-4xl mx-auto">
-        <button
-          onClick={() => navigate(-1)}
-          className="flex items-center gap-2 mb-4 text-purple-600"
-        >
-          <X className="w-6 h-6" />
-          Back to search
-        </button>
-
-        <div className="prose max-w-none">
-          <h1 className="text-3xl font-bold mb-4">Book Content</h1>
-          <div className="whitespace-pre-wrap">{content}</div>
+    <div className="min-h-screen bg-purple-50">
+      {/* Header */}
+      <header className="bg-white shadow-sm border-b border-purple-100">
+        <div className="max-w-6xl mx-auto px-6 py-4">
+          <div className="flex items-center gap-4">
+            <button
+              onClick={() => navigate(-1)}
+              className="flex items-center gap-2 text-purple-600 hover:text-purple-800 transition-colors"
+            >
+              <ArrowLeft className="w-5 h-5" />
+              Back
+            </button>
+            <div className="flex-1 min-w-0">
+              <h1 className="text-xl font-bold text-purple-800 truncate">{bookContent.title}</h1>
+              <p className="text-purple-600 truncate">by {bookContent.author}</p>
+            </div>
+          </div>
         </div>
-      </div>
+      </header>
+
+      {/* Content */}
+      <main className="max-w-4xl mx-auto px-6 py-8">
+        {/* Text Content */}
+        {bookContent.type === 'text' && bookContent.pages && (
+          <div className="bg-white rounded-xl shadow-md p-6">
+            <div className="mb-4 flex items-center justify-between">
+              <p className="text-purple-600">
+                Page {currentPage + 1} of {bookContent.pages.length}
+              </p>
+              <div className="flex gap-2">
+                <button
+                  onClick={goToPreviousPage}
+                  disabled={currentPage === 0}
+                  className="flex items-center gap-1 px-3 py-1 bg-purple-600 text-white rounded hover:bg-purple-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  <ChevronLeft className="w-4 h-4" />
+                  Prev
+                </button>
+                <button
+                  onClick={goToNextPage}
+                  disabled={currentPage === (bookContent.pages?.length || 0) - 1}
+                  className="flex items-center gap-1 px-3 py-1 bg-purple-600 text-white rounded hover:bg-purple-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  Next
+                  <ChevronRight className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+            
+            <div className="prose max-w-none p-4 bg-gray-50 rounded-lg">
+              <div className="whitespace-pre-wrap text-gray-800 leading-relaxed">
+                {bookContent.pages[currentPage]}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* External Link */}
+        {bookContent.type === 'external' && (
+          <div className="bg-white rounded-xl shadow-md p-8 text-center">
+            <ExternalLink className="w-16 h-16 text-purple-600 mx-auto mb-4" />
+            <h2 className="text-2xl font-bold text-purple-800 mb-4">
+              Read Online
+            </h2>
+            <p className="text-purple-600 mb-6">
+              This book is available to read on an external site.
+            </p>
+            <a
+              href={bookContent.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
+            >
+              <ExternalLink className="w-5 h-5" />
+              Read Now
+            </a>
+          </div>
+        )}
+
+        {/* Unavailable Content */}
+        {bookContent.type === 'unavailable' && (
+          <div className="bg-white rounded-xl shadow-md p-8 text-center">
+            <BookOpen className="w-16 h-16 text-purple-300 mx-auto mb-4" />
+            <h2 className="text-2xl font-bold text-purple-800 mb-4">
+              Content Not Available
+            </h2>
+            <p className="text-purple-600 mb-6">
+              Unfortunately, this book is not available for online reading.
+              You may find it at your local library or bookstore.
+            </p>
+            <button
+              onClick={() => navigate('/')}
+              className="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
+            >
+              Search for Another Book
+            </button>
+          </div>
+        )}
+      </main>
     </div>
   );
 };

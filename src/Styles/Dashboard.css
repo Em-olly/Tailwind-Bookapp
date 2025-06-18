@@ -1,0 +1,143 @@
+/* Dashboard.css */
+.dashboard-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100%;
+  position: relative;
+}
+
+/* Top Navbar */
+.dashboard-header {
+  height: 60px;
+  background-color: #FFFFFF;
+  color: white;
+  display: flex;
+  align-items: center;
+  padding: 0 1rem;
+  justify-content: space-between;
+  box-sizing: border-box;
+  box-shadow: 0 0 3px 0 #9333ea;
+  z-index: 30;
+  position: sticky;
+  top: 0;
+}
+
+.dashboard-header-content {
+  display: flex;
+  width: 100%;
+  /*max-width: 1200px;*/
+  margin: 0 auto;
+  /*justify-content: space-between;*/
+  align-items: center;
+}
+
+.dashboard-header-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.dashboard-menu-btn {
+  background: none;
+  border: none;
+  color: #9333ea;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 4px;
+}
+
+.dashboard-menu-btn:hover {
+  background-color: #f3e8ff;
+}
+
+.logo-icon {
+  width: 2rem;
+  height: 2rem;
+  color: #9333ea;
+}
+
+.dashboard-title {
+  font-weight: bold;
+  margin: 0;
+  font-size: 1.5rem;
+  color: #711ea2;
+}
+
+.dashboard-nav {
+  display: none;
+}
+
+.dashboard-nav-link {
+  color: #9333ea;
+  text-decoration: none;
+  margin-left: 1rem;
+  padding: 0.5rem;
+  border-radius: 4px;
+}
+.dashboard-nav-link.active {
+  background: #f3e8ff;
+  color: #711ea2;
+  font-weight: bold;
+}
+
+.dashboard-nav-link:hover {
+  background: color #f3e8ff;
+  color: #711ea2;
+}
+
+@media (min-width: 768px) {
+  .dashboard-nav {
+    display: flex;
+  }
+}
+
+/* Layout container for Sidebar and Main */
+.dashboard-layout {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Main content */
+.dashboard-content {
+  background-color: #f3e8ff;
+  flex: 1;
+  padding: 1rem;
+  overflow-y: auto;
+  background-color: f3e8ff;
+  transition: margin-left 0.3s ease;
+  margin-left: 0;
+  padding-left: 0;
+}
+
+@media (min-width: 768px) {
+  .dashboard-content {
+    /*margin-left: 16rem;
+    background-color: #f3e8ff;*/
+    margin-left: 0; /* Reset margin for larger screens */
+  }
+
+  .sidebar-closed .dashboard-content {
+    margin-left: 0;
+  }
+}
+
+/* Sidebar overlay for mobile */
+.sidebar-overlay {
+  position: fixed;
+  top: 60px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 20;
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .sidebar-overlay {
+    display: block;
+  }
+}
