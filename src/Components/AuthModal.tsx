@@ -9,7 +9,7 @@ interface AuthModalProps {
   onSwitchMode: () => void;
 }
 
-const AuthModal: React.FC <AuthModalProps> = ({mode, onClose, onSwitchMode}) => {
+const AuthModal: React.FC<AuthModalProps> = ({ mode, onClose, onSwitchMode }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -32,12 +32,14 @@ const AuthModal: React.FC <AuthModalProps> = ({mode, onClose, onSwitchMode}) => 
         return;
       }
 
-      if (isLogin) {await login(email, password);
+      if (isLogin) {
+        await login(name, email, password);
         alert(`Welcome back ${name}!`);
-      } else { await signup(email, password);
+      } else {
+        await signup(name,email, password);
         alert("Account created successfully!Welcome to BookHaven ${name}!");
       }
-
+      
       onClose();
     } catch (error: any) {
       alert(error.message || "An error occurred. Please try again.");
@@ -61,28 +63,28 @@ const AuthModal: React.FC <AuthModalProps> = ({mode, onClose, onSwitchMode}) => 
           <div className="flex flex-col">
             <label htmlFor="name" className="text-white font-medium mb-2"> Full Name</label>
             <input id="name" type="name" autoComplete="name" value={name} onChange={(e) => setName(e.target.value)}
-             className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-white/80 outline-none transition-all focus:ring-2 focus:ring-purple-600 focus:border-transparent"
-              required/>
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-white/80 outline-none transition-all focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+              required />
           </div>
           <div className="flex flex-col">
             <label htmlFor="email" className="text-white font-medium mb-2"> Email</label>
             <input id="email" type="email" autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)}
-             className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-white/80 outline-none transition-all focus:ring-2 focus:ring-purple-600 focus:border-transparent"
-              required/>
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-white/80 outline-none transition-all focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+              required />
           </div>
           <div className="flex flex-col">
-           <label htmlFor="password" className="text-white font-medium mb-2"> Password </label>
-           <input id="password" type="password" autoComplete={isLogin ? "current-password" : "new-password"} value={password} onChange={(e) => setPassword(e.target.value)}
-             className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-white/80 outline-none transition-all focus:ring-2 focus:ring-purple-600 focus:border-transparent"
-             required/>
+            <label htmlFor="password" className="text-white font-medium mb-2"> Password </label>
+            <input id="password" type="password" autoComplete={isLogin ? "current-password" : "new-password"} value={password} onChange={(e) => setPassword(e.target.value)}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-white/80 outline-none transition-all focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+              required />
           </div>
 
           {!isLogin && (
             <div className="flex flex-col">
               <label htmlFor="confirm-password" className="text-white font-medium mb-2"> Confirm Password</label>
               <input id="confirm-password" type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)}
-               className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-white/80 outline-none transition-all focus:ring-2 focus:ring-purple-600 focus:border-transparent"
-              required/>
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-white/80 outline-none transition-all focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+                required />
               {passwordError && (<p className="text-red-500 text-sm mt-1">{passwordError}</p>)}
             </div>
           )}

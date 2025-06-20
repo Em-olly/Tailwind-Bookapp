@@ -57,7 +57,7 @@ const HelpCenter = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white card">
       {/* Header with back button */}
       <div className="bg-gradient-to-r from-purple-600 to-purple-800 text-white py-12 px-4 text-center relative">
         <Link 
@@ -175,15 +175,7 @@ const HelpCenter = () => {
         </div>
       </div>
 
-      {/* Simple Footer */}
-      <div className="bg-gray-800 text-gray-300 py-8 px-4 text-center mt-12">
-        <p className="mb-2">
-          <Link to="/" className="hover:text-white">Home</Link> • 
-          <Link to="/help-center" className="hover:text-white ml-2">Help Center</Link>
-        </p>
-        <p>&copy; {new Date().getFullYear()} BookHaven. All rights reserved.</p>
-      </div>
-    </div>
+     </div>
   );
 };
 

@@ -31,35 +31,35 @@ const BookReader: React.FC = () => {
   const fetchBookContent = async (key: string) => {
     setLoading(true);
     setError(null);
-    
+
     try {
       // Properly format the book key
       const formattedKey = key.startsWith('/works/') ? key : `/works/${key}`;
-      
+
       // Fetch book metadata
       const bookResponse = await fetch(`https://openlibrary.org${formattedKey}.json`);
       if (!bookResponse.ok) throw new Error('Book not found');
-      
+
       const bookData = await bookResponse.json();
-      
+
       // Extract title and author
       const title = bookData.title || 'Unknown Title';
       const author = bookData.authors?.[0]?.name || 'Unknown Author';
-      
+
       // Try to get readable content
       let content: BookContent = {
         type: 'unavailable',
         title,
         author
       };
-      
+
       // Try Internet Archive first
       if (bookData.ocaid) {
         try {
           const iaResponse = await fetch(
             `https://archive.org/download/${bookData.ocaid}/${bookData.ocaid}_djvu.txt`
           );
-          
+
           if (iaResponse.ok) {
             const text = await iaResponse.text();
             content = {
@@ -74,15 +74,15 @@ const BookReader: React.FC = () => {
           console.log('Internet Archive content not available');
         }
       }
-      
-      
+
+
       // Fallback to external link
       if (content.type === 'unavailable' && bookData.links?.length > 0) {
-        const readableLink = bookData.links.find((link: any) => 
-          link.title?.toLowerCase().includes('read') || 
+        const readableLink = bookData.links.find((link: any) =>
+          link.title?.toLowerCase().includes('read') ||
           link.title?.toLowerCase().includes('full text')
         );
-        
+
         if (readableLink) {
           content = {
             type: 'external',
@@ -92,7 +92,7 @@ const BookReader: React.FC = () => {
           };
         }
       }
-      
+
       setBookContent(content);
     } catch (err) {
       console.error('Error fetching book content:', err);
@@ -106,11 +106,11 @@ const BookReader: React.FC = () => {
     const wordsPerPage = 500;
     const words = text.split(/\s+/);
     const pages: string[] = [];
-    
+
     for (let i = 0; i < words.length; i += wordsPerPage) {
       pages.push(words.slice(i, i + wordsPerPage).join(' '));
     }
-    
+
     return pages;
   };
 
@@ -205,7 +205,7 @@ const BookReader: React.FC = () => {
                 </button>
               </div>
             </div>
-            
+
             <div className="prose max-w-none p-4 bg-gray-50 rounded-lg">
               <div className="whitespace-pre-wrap text-gray-800 leading-relaxed">
                 {bookContent.pages[currentPage]}
@@ -261,3 +261,6 @@ const BookReader: React.FC = () => {
 };
 
 export default BookReader;
+
+
+

@@ -1,48 +1,36 @@
-// import { BrowserRouter, Routes, Route } from "react-router-dom";
-// import { AuthProvider } from "./hooks/useAuth.tsx";
-// import WelcomePage from "./Pages/welcomePage.tsx";
-// import NotFound from "./Pages/NotFound.tsx";
-// import Dashboard from "./Components/Dashboard.tsx";
 
-// const App = () => (
-//   <AuthProvider>
-//     <BrowserRouter>
-//       <Routes>
-//         <Route path="/" element={<WelcomePage />} />
-//         <Route path="*" element={<NotFound />} />
-//         <Route path="/dashboard/*" element={<Dashboard />} />
-//       </Routes>
-//     </BrowserRouter>
-//   </AuthProvider>
-// );
-
-// export default App;
 // src/App.tsx
-import { useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./Context/useAuth.tsx";
 import WelcomePage from "./Pages/WelcomePage.tsx";
 import UserSettings from "./Components/UserSettings.tsx";
-import Dashboard from "./Pages/Dashboard.tsx";
+import HomePage from "./Pages/Homepage.tsx";
 import BookReader from "./Components/BookReader.tsx";
 import NotFound from "./Pages/NotFound.tsx";
 import HelpCenter from "./Pages/HelpCenter.tsx";
+import BookSearch  from "./Components/BookSearch.tsx";
+import { ThemeProvider } from "./Context/ThemeProvider.tsx";
+import "./index.css"
 
 const App = () => {
-  
+
 
   return (
+
     <AuthProvider>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<WelcomePage />} />
-          <Route path="/dashboard/*" element={<Dashboard />} />
-          <Route path="/help-center" element={<HelpCenter />} />
-          <Route path="/book/:bookKey" element={<BookReader />} />
-          <Route path="settings" element={<UserSettings />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
+      <ThemeProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<WelcomePage />} />
+            <Route path="/dashboard/*" element={<HomePage/>} />
+            <Route path="/help-center" element={<HelpCenter />} />
+            <Route path="/search" element={<BookSearch />} />
+            <Route path="/book/:bookKey" element={<BookReader />} />
+            <Route path="settings" element={<UserSettings />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </ThemeProvider>
     </AuthProvider>
   );
 };

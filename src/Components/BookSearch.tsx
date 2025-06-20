@@ -81,7 +81,7 @@ const BookSearch = () => {
             onChange={(e) => setSearchQuery(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder="Press enter to search for books by title...."
-            className="w-full py-3 px-4 pr-12 text-lg border border-purple-600 rounded-full outline-none focus:ring-2 focus:ring-purple-500"
+            className="w-full py-3 px-4 pr-12 text-[#711ea2] border border-purple-600 rounded-full outline-none focus:ring-2 focus:ring-purple-500"
             disabled={loading}
           />
           {loading ? (
@@ -121,9 +121,8 @@ const BookSearch = () => {
                   />
                 ) : null}
                 <div
-                  className={`absolute inset-0 flex items-center justify-center ${
-                    book.cover_i ? "hidden" : ""
-                  }`}
+                  className={`absolute inset-0 flex items-center justify-center ${book.cover_i ? "hidden" : ""
+                    }`}
                 >
                   <BookOpen className="w-12 h-12 text-purple-300" />
                 </div>
@@ -169,3 +168,4 @@ const BookSearch = () => {
 };
 
 export default BookSearch;
+

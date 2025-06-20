@@ -6,7 +6,7 @@ import UserProfile from "../Components/Userprofile";
 import UserSettings from "../Components/UserSettings";
 import BookSearch from "../Components/BookSearch";
 
-const Dashboard: React.FC = () => {
+const HomePage: React.FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [currentView, setCurrentView] = useState<"home" | "profile" | "settings">("home");
   const renderContent = () => {
@@ -37,15 +37,10 @@ const Dashboard: React.FC = () => {
             <h1 className="text-xl font-bold text-purple-800">BookHaven</h1>
           </div>
 
-          {/* Right-aligned navigation */}
+          {/* Right-aligned items*/}
           <nav className="hidden md:flex">
+          
             <Link
-              to="/"
-              className="text-purple-600 no-underline px-4 py-2 hover:text-purple-800 hover:bg-purple-50"
-            >
-              Dashboard
-            </Link>
-            <Link 
               to="/help-center"
               className="text-purple-600 no-underline px-4 py-2 hover:text-purple-800 hover:bg-purple-50"
             >
@@ -83,4 +78,4 @@ const Dashboard: React.FC = () => {
   );
 };
 
-export default Dashboard;
+export default HomePage;

@@ -39,11 +39,7 @@ const Sidebar: React.FC<SidebarProps> = ({
           {/* Sidebar Header */}
           <div className="sidebar-header">
             <h2 className="sidebar-title">Menu</h2>
-            <button
-              onClick={onClose}
-              className="sidebar-close-btn"
-              aria-label="Close sidebar"
-            >
+            <button onClick={onClose} className="sidebar-close-btn" aria-label="Close sidebar">
               <X size={20} />
             </button>
           </div>
@@ -58,7 +54,7 @@ const Sidebar: React.FC<SidebarProps> = ({
               </div>
               <div>
                 <p className="sidebar-user-name">
-                  {user?.email?.split("@")[0] || "Guest"}
+                  {"Molly"}
                 </p>
                 <p className="sidebar-user-email">
                   {user?.email || "No email available"}
@@ -73,9 +69,8 @@ const Sidebar: React.FC<SidebarProps> = ({
               {navItems.map((item) => (
                 <li key={item.id}>
                   <button
-                    className={`sidebar-nav-item ${
-                      currentView === item.id ? "active" : ""
-                    }`}
+                    className={`sidebar-nav-item ${currentView === item.id ? "active" : ""
+                      }`}
                     onClick={() => {
                       onViewChange(item.id as "home" | "profile" | "settings");
                       if (window.innerWidth < 768) onClose();

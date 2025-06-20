@@ -16,7 +16,7 @@ const UserSettings: React.FC = () => {
 
   return (
     <div className="max-w-md mx-auto p-4">
-      <div className="bg-card-bg rounded-xl shadow p-6 border-border-color border">
+      <div className="card rounded-xl shadow p-6 bg-[#F3E8FF]">
         <div className="flex items-center gap-3 mb-6">
           <Settings className="text-secondary" />
           <h1 className="text-xl font-bold text-heading">Settings</h1>
@@ -77,7 +77,7 @@ const UserSettings: React.FC = () => {
           {/* Save Button */}
           <button
             onClick={saveSettings}
-            className="w-full flex justify-center items-center gap-2 py-2 bg-secondary text-white rounded-lg hover:bg-purple-700"
+            className="w-full flex justify-center items-center gap-2 py-2 bg-[#9333ea] text-white rounded-lg hover:bg-purple-700"
           >
             <Save size={16} />
             Save Settings

@@ -2,33 +2,39 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
+body, #root {
+  min-height: 100vh;
   background-color: var(--bg-color);
   color: var(--text-color);
   font-size: var(--base-font-size);
+  transition: background-color 0.3s, color 0.3s;
 }
 
-.bg-card-bg {
-  background-color: var(--card-bg);
+h1, h2, h3, h4, h5, h6 {
+  color: var(--heading);
 }
 
 .border-border-color {
   border-color: var(--border-color);
-}
 
-.text-heading {
-  color: var(--heading);
 }
 
 .text-secondary {
   color: var(--secondary);
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+:link,button {
+  color: var(--secondary);
 }
 
-.animate-fadeIn {
-  animation: fadeIn 0.3s ease-in-out;
+.card {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 0.5rem;
+  /* padding: 1rem; */
+  color: white;
+}
+
+.theme-transition * {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
