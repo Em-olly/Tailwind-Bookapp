@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Book } from "lucide-react";
-import { useAuth } from "../Context/useAuth";
+import { useAuth } from "../Context/AuthProvider.tsx";
 import AuthModal from "../Components/AuthModal";
 import HomePage from "./Homepage";
 
@@ -19,7 +19,7 @@ const WelcomePage = () => {
   }
 
   return (
-    <div className="relative min-h-screen bg-gradient-to-br from-purple-900 to-indigo-900 font-sans overflow-hidden">
+    <div className="relative min-h-screen bg-gradient-to-br from-purple-700 to-indigo-700 font-sans overflow-hidden">
       {/* Video background */}
       <div className="absolute inset-0 z-0">
         <video autoPlay muted loop playsInline className="w-full h-full object-cover opacity-50" >

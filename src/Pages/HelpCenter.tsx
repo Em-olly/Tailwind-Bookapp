@@ -60,8 +60,8 @@ const HelpCenter = () => {
     <div className="min-h-screen bg-white card">
       {/* Header with back button */}
       <div className="bg-gradient-to-r from-purple-600 to-purple-800 text-white py-12 px-4 text-center relative">
-        <Link 
-          to="/" 
+        <Link
+          to="/"
           className="absolute top-4 left-4 flex items-center gap-1 p-2 rounded-full hover:bg-white/20 transition-colors"
         >
           <ArrowLeft className="w-5 h-5" />
@@ -91,7 +91,7 @@ const HelpCenter = () => {
         {/* FAQ Section*/}
         <div className="mb-12">
           <h2 className="text-2xl font-bold mb-6 text-center text-[#711ea2]">FAQs</h2>
-          
+
           <div className="space-y-4">
             {faqSections.map(section => (
               <div key={section.id} className="bg-[#f3e8ff] rounded-xl shadow border border-[#d9c2ff]">
@@ -100,12 +100,12 @@ const HelpCenter = () => {
                   className="flex justify-between items-center w-full p-5"
                 >
                   <h3 className="font-semibold text-[#711ea2]">{section.title}</h3>
-                  {activeSection === section.id ? 
-                    <ChevronUp className="w-5 h-5 text-[#711ea2]" /> : 
+                  {activeSection === section.id ?
+                    <ChevronUp className="w-5 h-5 text-[#711ea2]" /> :
                     <ChevronDown className="w-5 h-5 text-[#711ea2]" />
                   }
                 </button>
-                
+
                 {activeSection === section.id && (
                   <div className="px-5 pb-5">
                     {section.questions.map((faq, i) => (
@@ -124,7 +124,7 @@ const HelpCenter = () => {
         {/* Contact Form */}
         <div className="bg-[#f3e8ff] rounded-xl shadow p-6 border border-[#d9c2ff]">
           <h2 className="text-2xl font-bold mb-4 text-center text-[#711ea2]">Contact Us</h2>
-          
+
           {isSubmitted ? (
             <div className="bg-green-100 text-green-700 p-4 rounded-lg text-center">
               Thank you! We'll respond to your message soon.
@@ -132,40 +132,40 @@ const HelpCenter = () => {
           ) : (
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <input 
-                  type="text" 
-                  name="name" 
-                  value={formData.name} 
-                  onChange={handleChange} 
-                  placeholder="Your Name" 
-                  className="w-full p-3 border border-[#d9c2ff] rounded-lg focus:ring-2 focus:ring-[#711ea2] focus:outline-none"
-                  required
-                />
-              </div>
-              <div>
-                <input 
-                  type="email" 
-                  name="email" 
-                  value={formData.email} 
-                  onChange={handleChange} 
-                  placeholder="Your Email" 
-                  className="w-full p-3 border border-[#d9c2ff] rounded-lg focus:ring-2 focus:ring-[#711ea2] focus:outline-none"
-                  required
-                />
-              </div>
-              <div>
-                <textarea 
-                  name="message" 
-                  value={formData.message} 
+                <input
+                  type="text"
+                  name="name"
+                  value={formData.name}
                   onChange={handleChange}
-                  placeholder="Your Message" 
-                  rows={4} 
+                  placeholder="Your Name"
+                  className="w-full p-3 border border-[#d9c2ff] rounded-lg focus:ring-2 focus:ring-[#711ea2] focus:outline-none"
+                  required
+                />
+              </div>
+              <div>
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  placeholder="Your Email"
+                  className="w-full p-3 border border-[#d9c2ff] rounded-lg focus:ring-2 focus:ring-[#711ea2] focus:outline-none"
+                  required
+                />
+              </div>
+              <div>
+                <textarea
+                  name="message"
+                  value={formData.message}
+                  onChange={handleChange}
+                  placeholder="Your Message"
+                  rows={4}
                   className="w-full p-3 border border-[#d9c2ff] rounded-lg focus:ring-2 focus:ring-[#711ea2] focus:outline-none"
                   required
                 ></textarea>
               </div>
-              <button 
-                type="submit" 
+              <button
+                type="submit"
                 className="w-full bg-[#711ea2] text-white py-3 rounded-lg font-medium hover:bg-[#5a1680] transition-colors"
               >
                 Send Message
@@ -175,7 +175,7 @@ const HelpCenter = () => {
         </div>
       </div>
 
-     </div>
+    </div>
   );
 };
 

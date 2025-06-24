@@ -1,12 +1,35 @@
-# React + Vite
+# 📚 Book Haven App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A clean and modern web application that allows users to search for books by title using the Open Library API. Users can explore book covers, authors, and publication years, and click on a book to view more detailed information.
 
-Currently, two official plugins are available:
+## ✨ Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- 🔍 Search for books by title
+- 📖 View book details such as author, cover, and first published year
+- 📚 Uses Open Library API
+- 📄 Inline PDF viewer for available public domain books
+- ⚡ Fast and responsive design with Tailwind CSS
+- 🔄 Loading indicators and empty state handling
+- 🚀 Built with React, TypeScript, and React Router
 
-## Expanding the ESLint configuration
+## 📸 Screenshots
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+| Search Page                      | Book Details                      |
+|----------------------------------|-----------------------------------|
+| ![Search Screenshot](./screenshots/search.png) | ![Detail Screenshot](./screenshots/detail.png) |
+
+## 🛠️ Tech Stack
+
+- **Frontend**: React, TypeScript
+- **Routing**: React Router DOM
+- **Styling**: Tailwind CSS
+- **Icons**: Lucide Icons
+- **API**: [Open Library](https://openlibrary.org/developers/api)
+
+## 🔧 Installation
+
+1. **Clone the repository**
+
+```bash
+git clone https://github.com/your-username/book-search-app.git
+cd tailwind-app

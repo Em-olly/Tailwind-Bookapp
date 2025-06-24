@@ -1,7 +1,7 @@
 
 // src/App.tsx
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { AuthProvider } from "./Context/useAuth.tsx";
+import { AuthProvider } from "./Context/AuthProvider.tsx";
 import WelcomePage from "./Pages/WelcomePage.tsx";
 import UserSettings from "./Components/UserSettings.tsx";
 import HomePage from "./Pages/Homepage.tsx";

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { X } from "lucide-react";
-import { useAuth } from "../Context/useAuth";
+import { useAuth } from "../Context/AuthProvider";
 import "../Styles/AuthModal.css";
 
 interface AuthModalProps {
@@ -33,11 +33,11 @@ const AuthModal: React.FC<AuthModalProps> = ({ mode, onClose, onSwitchMode }) =>
       }
 
       if (isLogin) {
-        await login(name, email, password);
+        await login(email, password);
         alert(`Welcome back ${name}!`);
       } else {
         await signup(name,email, password);
-        alert("Account created successfully!Welcome to BookHaven ${name}!");
+        alert(`Account created successfully! Welcome to BookHaven ${name}!`);
       }
       
       onClose();

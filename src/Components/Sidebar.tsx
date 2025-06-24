@@ -1,7 +1,7 @@
 // Sidebar.tsx
 import React from "react";
 import "../Styles/Sidebar.css";
-import { useAuth } from "../Context/useAuth";
+import { useAuth } from "../Context/AuthProvider";
 import { Home, User, Settings, LogOut, X } from "lucide-react";
 
 interface SidebarProps {
@@ -32,9 +32,9 @@ const Sidebar: React.FC<SidebarProps> = ({
 
   return (
     <>
-      {isOpen && <div className="sidebar-overlay" onClick={onClose} />}
+      {isOpen && <div className="sidebar-overlay" onClick={onClose} /> }
 
-      <div className={`sidebar-container ${isOpen ? "open" : "closed"}`}>
+      <div className={`sidebar-container ${isOpen ? "open" : "closed"} card`}>
         <div className="sidebar">
           {/* Sidebar Header */}
           <div className="sidebar-header">
@@ -54,7 +54,7 @@ const Sidebar: React.FC<SidebarProps> = ({
               </div>
               <div>
                 <p className="sidebar-user-name">
-                  {"Molly"}
+                  {user?.displayName || "Guest"}
                 </p>
                 <p className="sidebar-user-email">
                   {user?.email || "No email available"}
